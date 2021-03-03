@@ -1,0 +1,100 @@
+%Într-o seară a avut loc o crimă în casa unei familii formata din parinti si 2 copii,un baiat si o fata.
+%Una dintre aceste patru persoane a ucis-o pe una dintre celelalte.
+%Unul dintre membrii familiei a asistat la crimă.
+%Celălalt l-a ajutat pe criminal.
+%Acestea sunt lucrurile pe care le știm sigur:
+
+%1. Martorul și cel care il ajuta pe criminal nu sunt de același sex.
+
+%2. Cea mai în vârstă și martorul nu sunt de același sex.
+
+%3. Aproape cea mai tânără persoană și victima nu sunt de același sex.
+
+%4. Cel care il ajuta pe criminal este mai în vârstă decât victima.
+
+%5. Tatăl este cel mai în vârstă membru al familiei.
+
+%6. Criminalul nu este cel mai tânăr membru al familiei.
+
+
+%Cine este criminalul?
+
+set(ignore_option_dependencies).
+
+
+asign(max_seconds,60).
+asign(max_models,4).
+
+formulas(assumptions).
+
+acelasiSex(tata,fiul).
+acelasiSex(mama,fiica).
+-acelasiSex(tata,mama).
+-acelasiSex(fiul,fiica).
+
+tanar(fiica,mama).
+tanar(fiul,tata).
+tanar(fiul,mama).
+tanar(fiica,tata).
+tanar(mama,tata).%5
+
+
+%toata familia locuieste in casa si cineva ucide pe cineva 
+all x ( locuieste(x,casa)).
+exists x ( locuieste(x,casa) & ucide(x) ).
+
+%exista un martor un complice si o victima
+
+exists x ( locuieste(x,casa) & martor(x)).
+exists x ( locuieste(x,casa) & complice(x)).
+exists x ( locuieste(x, casa) & victima(x)).
+
+all x all y( martor(x) & complice(y) -> -acelasiSex(x,y)&x!=y). %1
+all x ( martor(x) -> -acelasiSex(x,tata)).%2
+all x ( victima(x) -> -acelasiSex(x,fiul)).%3
+all x all y ( complice(x) & victima(y)-> -tanar(x,y)).%4
+all x ( ucide(x)-> x!=fiica).%6
+
+%casa nu poate sa fie nici martor nici victima nici complice nici criminal
+%casa este neutra dpdv al sexului
+%casa nu poate sa fie tanara
+
+martor(x)->x!=casa.
+complice(x)->x!=casa.
+victima(x)->x!=casa.
+acelasiSex(x,y)->(x!=casa & y!=casa).
+tanar(x,y)->(x!=casa & y!=casa).
+-ucide(casa).
+
+%martorul, victima,criminalul si complicele sunt persoane diferite
+
+martor(x) & ucide(y)->x!=y.
+martor(x) & victima(y)->x!=y.
+martor(x) & complice(y)->x!=y.
+complice(x) & victima(y)->x!=y.
+complice(x) & ucide(y)->x!=y.
+victima(x) & ucide(y)->x!=y.
+
+
+%mama,tata,fiul si fiica sunt persoane diferite
+
+mama!=tata.
+mama!=fiica.
+mama!=fiul.
+mama!=casa.
+tata!=fiul.
+tata!=fiica.
+tata!=casa.
+fiul!=fiica.
+fiul!=casa.
+fiica!=casa.
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+
+
+
+

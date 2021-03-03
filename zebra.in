@@ -1,0 +1,103 @@
+set(integer_ring).
+  
+set(order_domain).
+set(arithmetic).
+assign(domain_size, 5).
+  
+%Pe o strada exista 5 case. Fiecare are cate un locatar de nationalitate diferita, culoare, bautura %preferata, animal de companie si tigari diferite. In care casa se afla o zebra ca animal de companie 
+%si in care casa se bea gin? Indicii:
+
+%1. Englezul locuieste in casa rosie.
+%2. Spaniolul detine un caine.
+%3. Danezul traieste in prima casa de pe stanga.
+%4. In casa galbena se fumeaza Marlboro.
+%5. Persoana care fumeaza Chesterfield locuieste langa individul care detine o pisica.
+%6. Norvegianul locuieste langa casa albastra.
+%7. Persoana care fumeaza Winston detine ornitorinci.
+%8. Persoana care fumeaza Lucky Strike prefera sucul de portocale.
+%9. Canadianul bea ceai.
+%10. Japonezul fumeaza Parliament.
+%11. Casa in care se fumeaza Marlboro se afla langa cea in care exista un sarpe ca animal de companie.
+%12. Cafeaua este preferata in casa verde.
+%13. Casa verde se afla in dreapta casei roz. 
+%14. In casa din mijloc este preferat laptele. 
+
+
+formulas(assumptions).
+
+%Indicii
+England(x) <-> Rosu(x).
+
+Spain(x) <-> Caine(x).
+
+Denmark(0).
+
+Marlboro(x) <-> Galben(x).
+
+Chesterfield(x) & Pisica(y) -> neighbors(x,y).
+
+Denmark(x) & Albastru(y) -> neighbors(x,y).
+
+Winston(x) <-> Ornitorinc(x).
+
+LuckyStrike(x) <-> Suc(x).
+
+Canada(x) <-> Ceai(x).
+
+Japan(x) <-> Parliament(x).
+
+Marlboro(x) & Sarpe(y) -> neighbors(x,y).
+
+Cafea(x) <-> Verde(x).
+
+Verde(x) & Roz(y) -> successor(y,x).
+
+Lapte(2).
+
+
+% Definirea vecinilor si a succesorilor bazata pe indicii
+
+successor(x,y) <-> x+1 = y & x < y.
+neighbors(x,y) <-> successor(x,y) | successor(y,x).
+
+%Fiecare casa are cel putin una dintre urmatoarele: o nationalitate, un animal, o bautura preferata, %o culoare, un tip de tigari.
+
+England(x) | Spain(x) | Canada(x) | Japan(x) | Denmark(x).
+Caine(x) | Ornitorinc(x) | Sarpe(x) | Zebra(x) | Pisica(x).
+Gin(x) | Lapte(x) | Suc(x) | Ceai(x) | Cafea(x).
+Rosu(x) | Albastru(x) | Galben(x) | Roz(x) | Verde(x).
+LuckyStrike(x) | Winston(x) | Marlboro(x) | Chesterfield(x) | Parliament(x).
+
+%Fiecare proprietate se aplica unei singure case.
+
+England(x) & England(y) -> x = y.  
+Spain(x) & Spain(y) -> x = y.      
+Canada(x) & Canada(y) -> x = y.  
+Japan(x) & Japan(y) -> x = y.     
+Denmark(x) & Denmark(y) -> x = y.    
+
+Caine(x) & Caine(y) -> x = y.      
+Ornitorinc(x) & Ornitorinc(y) -> x = y.      
+Sarpe(x) & Sarpe(y) -> x = y.     
+Zebra(x) & Zebra(y) -> x = y.     
+Pisica(x) & Pisica(y) -> x = y.          
+
+Gin(x) & Gin(y) -> x = y.      
+Lapte(x) & Lapte(y) -> x = y.        
+Suc(x) & Suc(y) -> x = y.
+Ceai(x) & Ceai(y) -> x = y.
+Cafea(x) & Cafea(y) -> x = y.
+
+Rosu(x) & Rosu(y) -> x = y.
+Albastru(x) & Albastru(y) -> x = y.
+Galben(x) & Galben(y) -> x = y.
+Roz(x) & Roz(y) -> x = y.
+Verde(x) & Verde(y) -> x = y.
+ 
+LuckyStrike(x) & LuckyStrike(y) -> x = y.
+Winston(x) & Winston(y) -> x = y.
+Marlboro(x) & Marlboro(y) -> x = y.
+Chesterfield(x) & Chesterfield(y) -> x = y.
+Parliament(x) & Parliament(y) -> x = y.
+
+end_of_list.

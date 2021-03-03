@@ -1,0 +1,95 @@
+assign(domain_size,6).
+
+list(distinct).
+
+[Audrey, Elaine, Betty, Freda, Cynthia, Doris].
+
+end_of_list.
+ 
+% (1) Audrey won't serve if Elaine is Captain, or if Freda is Treasurer.
+% (2) Betty won't be Treasurer if Cynthia is one of the officials.
+% (3) Audrey won't serve with both Betty and Elaine.
+% (4) Freda won't serve if Elaine is also an official.
+% (5) Betty refuses to be Vice-captain.
+% (6) Freda won't serve if she outranks Audrey.
+% (7) Cynthia won't serve with Audrey or Betty unless she is Captain.
+% (8) Doris won't serve unless Betty is Captain.
+% (9) Betty won't serve with Doris unless Elaine is also an official.
+% (10) Elaine won't serve unless she or Audrey is Captain.
+
+% Captain -> Vice-captain -> treasurer 
+
+% constant: A(Audrey), E(Elaine), B(Betty)
+% constant: F(Freda), C(Cyntia), D(Doris)
+
+% predicate: captain(x) meaning x is captain
+% predicate: treasurer(x) meaning x is a treasurer
+% predicate: official(x) meaning x is an official
+% predicate: vice(x) meanig x is vice-president
+% predicate: serve(x) (meaning x serves one of the functions)
+
+
+formulas(assumptions).
+
+ all x (serve(x) -> official(x)).
+ all x (official(x) -> serve(x)).
+ all x (official(x) -> captain(x) | vice(x) | treasurer(x)).
+ all x (captain(x) -> -vice(x) & -treasurer(x)).
+ all x (vice(x) -> -captain(x) & -treasurer(x)).
+ all x (treasurer(x) -> -captain(x) & -vice(x)).
+ 
+
+
+ captain(Audrey) -> -captain(Elaine) & -captain(Betty) & -captain(Freda) & -captain(Cynthia) & - captain(Doris).
+ captain(Elaine) -> -captain(Audrey) & -captain(Betty) & -captain(Freda) & -captain(Cynthia) & -captain(Doris).
+ captain(Betty) -> -captain(Elaine) & -captain(Audrey) & -captain(Freda) & -captain(Cynthia) & -captain(Doris).
+ captain(Freda) -> -captain(Elaine) & -captain(Betty) & -captain(Audrey) & -captain(Cynthia) & -captain(Doris).
+ captain(Cynthia) -> -captain(Elaine) & -captain(Betty) & -captain(Freda) & -captain(Audrey) & -captain(Doris).
+ captain(Doris) -> -captain(Elaine) & -captain(Betty) & -captain(Freda) & -captain(Cynthia) & -captain(Audrey).
+ 
+
+
+ vice(Audrey) -> -vice(Elaine) & -vice(Betty) & -vice(Freda) & -vice(Cynthia) & -vice(Doris). 
+ vice(Elaine) -> -vice(Audrey) & -vice(Betty) & -vice(Freda) & -vice(Cynthia) & -vice(Doris). 
+ vice(Betty) -> -vice(Elaine) & -vice(Audrey) & -vice(Freda) & -vice(Cynthia) & -vice(Doris). 
+ vice(Freda) -> -vice(Elaine) & -vice(Betty) & -vice(Audrey) & -vice(Cynthia) & -vice(Doris). 
+ vice(Cynthia) -> -vice(Elaine) & -vice(Betty) & -vice(Freda) & -vice(Audrey) & -vice(Doris). 
+ vice(Doris) -> -vice(Elaine) & -vice(Betty) & -vice(Freda) & -vice(Cynthia) & -vice(Audrey). 
+
+
+
+ treasurer(Audrey) -> -treasurer(Elaine) & -treasurer(Betty) & -treasurer(Freda) & -treasurer(Cynthia)  & -treasurer(Doris). 
+ treasurer(Elaine) -> -treasurer(Audrey) & -treasurer(Betty) & -treasurer(Freda) & -treasurer(Cynthia)  & -treasurer(Doris). 
+ treasurer(Betty) -> -treasurer(Elaine) & -treasurer(Audrey) & -treasurer(Freda) & -treasurer(Cynthia)  & -treasurer(Doris). 
+ treasurer(Freda) -> -treasurer(Elaine) & -treasurer(Betty) & -treasurer(Audrey) & -treasurer(Cynthia)  & -treasurer(Doris). 
+ treasurer(Cynthia) -> -treasurer(Elaine) & -treasurer(Betty) & -treasurer(Freda) & -treasurer(Audrey)  & -treasurer(Doris). 
+ treasurer(Doris) -> -treasurer(Elaine) & -treasurer(Betty) & -treasurer(Freda) & -treasurer(Cynthia)   & -treasurer(Audrey). 
+ 
+
+
+ exists x (captain(x)).
+ exists x (vice(x)).
+ exists x (treasurer(x)).
+ 
+
+
+ -serve(Audrey) -> captain(Elaine) | treasurer(Freda).
+ -treasurer(Betty) -> official(Cynthia).
+ -serve(Audrey) -> serve(Betty) & serve(Elaine).
+ -serve(Freda) -> official(Elaine).
+ -vice(Betty).
+ treasurer(Audrey) -> -serve(Freda).
+ vice(Audrey) -> -serve(Freda) | treasurer(Freda).
+ captain(Audrey) -> -serve(Freda) | vice(Freda) | treasurer(Freda).
+ serve(Audrey) | serve(Betty) -> captain(Cynthia).
+ serve(Doris) -> captain(Betty).
+ serve(Betty) & serve(Doris) -> official(Elaine).
+ serve(Elaine) -> captain(Elaine) | captain(Audrey).
+ 
+
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.

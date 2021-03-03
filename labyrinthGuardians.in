@@ -1,0 +1,46 @@
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(domain_size, 3).
+  assign(start_size, 3).
+  assign(end_size, 3).
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%Mergi într-un labirint și dintr-o dată gasesti în față trei drumuri posibile:
+% drumul din stânga este pavat cu aur, 
+% cel din fața ta este pavată cu marmură,
+% în timp ce cel din dreapta este pavat cu pietre.
+% Fiecare drum este protejată de un gardian.
+% Vorbești cu gardienii și iată ce îți spun:
+
+% Paznicul străzii de aur: „Acest drum te va aduce direct in capat
+% Mai mult, dacă drumul de piatra te duce în capat, 
+% atunci și drumul de marmura te duce în capat. ”
+
+%Paznicul străzii de marmură: „Nici drumul de aurul, nici cel de piatra nu vor te duce in capat. ”
+
+%Paznicul străzii de piatră: „Urmați drumul de aur și vei ajunge la capat, 
+%urmează drumul de marmura și te vei pierde ”.
+
+%Având în vedere că știi că toți gardienii sunt mincinoși, poți alege un drum
+%fiind sigur că te va conduce spre centrul labirintului?
+% Daca acesta este cazul,ce drum alegi?
+
+-( capat(aur) & ( capat(piatra) -> capat(marmura) ) ).
+-( -capat(aur) & -capat(piatra) ).
+-( capat(aur) & -capat(marmura) ).
+
+end_of_list.
+
+formulas(goals).
+
+capat(piatra).
+
+end_of_list.
